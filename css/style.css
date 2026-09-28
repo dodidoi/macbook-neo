@@ -997,6 +997,25 @@ body.dark-mode .neo-btn.primary {
   background: var(--theme-primary);
   color: #fff;
 }
+body.dark-mode .photo-item {
+  background: #1e293b;
+  border-color: rgba(255, 255, 255, 0.1);
+}
+body.dark-mode .photo-item span {
+  background: #1e293b;
+  color: #f1f5f9;
+}
+body.dark-mode .photo-cat {
+  color: #cbd5e1;
+}
+body.dark-mode .photo-cat:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+}
+body.dark-mode .photo-cat.active {
+  background: rgba(255, 255, 255, 0.15);
+  color: #fff;
+}
 
 /* Safari Window */
 .safari-toolbar {
@@ -1129,35 +1148,45 @@ body.dark-mode .neo-btn.primary {
   flex: 1;
   padding: 16px;
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 12px;
+  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  gap: 14px;
+  align-items: start;
+  align-content: start;
   overflow-y: auto;
 }
 .photo-item {
-  border-radius: 8px;
+  border-radius: 10px;
   overflow: hidden;
-  background: #f1f5f9;
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
   cursor: pointer;
-  transition: transform 0.2s;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
   display: flex;
   flex-direction: column;
 }
 .photo-item:hover {
-  transform: scale(1.03);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+  border-color: rgba(0, 0, 0, 0.15);
 }
 .photo-item img {
   width: 100%;
-  height: 100px;
+  height: 96px;
   object-fit: cover;
+  background: #f8fafc;
+  display: block;
 }
 .photo-item span {
   font-size: 11px;
   padding: 6px 8px;
   text-align: center;
-  font-weight: 500;
+  font-weight: 600;
+  color: #334155;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  background: #fff;
 }
 
 /* Music Window */

@@ -384,7 +384,7 @@ class MacBookNeoApp {
         if (window.neoAudio) window.neoAudio.playPop();
 
         if (type === "photo") {
-          window.neoApp.viewFullImage('assets/neo_lid_blush.png', '맥북 네오 4컬러 실물 3D 렌더');
+          window.neoApp.viewFullImage('assets/neo_lid_blush.png', '맥북 네오 Blush (블러쉬 핑크) 실물 상판');
         } else if (type === "guide-photo") {
           window.neoApp.viewFullImage('assets/finder_guy.png', '리틀 파인더 가이 공식 3D 렌더');
         } else if (type === "screenshot") {
@@ -577,15 +577,20 @@ class MacBookNeoApp {
         { src: 'assets/photo_neo_art.jpg', title: '네오 3D 젤리 스피어' }
       ],
       neo: [
-        { src: 'assets/neo_laptop_blush.png', title: 'Blush 핑크 실물 3D 렌더' },
-        { src: 'assets/neo_laptop_citrus.png', title: 'Citrus 라임 실물 3D 렌더' },
-        { src: 'assets/neo_laptop_indigo.png', title: 'Indigo 블루 실물 3D 렌더' },
-        { src: 'assets/neo_laptop_silver.png', title: 'Silver 실버 실물 3D 렌더' },
-        { src: 'assets/neo_lid_blush.png', title: '맥북 네오 4컬러 실물' }
+        { src: 'assets/neo_lid_blush.png', title: 'Blush (핑크) 실물 상판' },
+        { src: 'assets/neo_lid_citrus.png', title: 'Citrus (라임) 실물 상판' },
+        { src: 'assets/neo_lid_indigo.png', title: 'Indigo (블루) 실물 상판' },
+        { src: 'assets/neo_lid_silver.png', title: 'Silver (실버) 실물 상판' },
+        { src: 'assets/neo_laptop_blush.png', title: 'Blush 핑크 3D 랩탑' },
+        { src: 'assets/neo_laptop_citrus.png', title: 'Citrus 라임 3D 랩탑' },
+        { src: 'assets/neo_laptop_indigo.png', title: 'Indigo 블루 3D 랩탑' },
+        { src: 'assets/neo_laptop_silver.png', title: 'Silver 실버 3D 랩탑' }
       ],
       guy: [
-        { src: 'assets/finder_guy.png', title: '리틀 파인더 가이 공식 3D 화보' },
-        { src: 'assets/photo_neo_art.jpg', title: '파인더 가이의 아트 컬렉션' }
+        { src: 'assets/finder_guy.png', title: '리틀 파인더 가이 3D 화보' },
+        { src: 'assets/photo_neo_art.jpg', title: '가이의 3D 젤리 스피어 아트' },
+        { src: 'assets/wallpaper_blush_official.jpg', title: '가이 추천 Blush 캡슐 월페이퍼' },
+        { src: 'assets/wallpaper_indigo_official.jpg', title: '가이 추천 Indigo 캡슐 월페이퍼' }
       ]
     };
     this.currentPhotoCategory = 'landscapes';
