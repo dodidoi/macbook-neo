@@ -611,10 +611,70 @@ class MacBookNeoApp {
   }
 
   playKeynoteSlide() {
+    const keynoteWin = document.getElementById("window-keynote");
+    if (!keynoteWin) return;
+
+    let overlay = document.getElementById("keynote-slideshow-overlay");
+    if (!overlay) {
+      overlay = document.createElement("div");
+      overlay.id = "keynote-slideshow-overlay";
+      overlay.className = "keynote-slideshow-overlay";
+      keynoteWin.querySelector(".window-body").appendChild(overlay);
+    }
+
+    overlay.style.display = "flex";
+    this.renderSlideshowSlide();
+
     if (window.lilFinderGuy) {
-      window.lilFinderGuy.speak("Keynote 슬라이드쇼 재생을 시작했어! 📽️✨\n'MacBook Neo: 모두를 위한 $599의 혁신' 프레젠테이션이야!");
+      window.lilFinderGuy.speak("Keynote 슬라이드쇼 재생 모드야! 📽️✨\n화면을 클릭하거나 '다음' 버튼으로 슬라이드를 넘겨봐. '발표 종료'로 언제든 편집 화면으로 돌아올 수 있어!");
     }
     if (window.neoAudio) window.neoAudio.playPop();
+  }
+
+  exitKeynoteSlideshow() {
+    const overlay = document.getElementById("keynote-slideshow-overlay");
+    if (overlay) {
+      overlay.style.display = "none";
+    }
+    if (window.neoAudio) window.neoAudio.playPop();
+  }
+
+  nextKeynoteSlide() {
+    this.currentKeynoteIndex = (this.currentKeynoteIndex + 1) % this.keynoteSlides.length;
+    this.renderSlideshowSlide();
+    this.renderKeynoteSlide();
+    if (window.neoAudio) window.neoAudio.playPop();
+  }
+
+  prevKeynoteSlide() {
+    this.currentKeynoteIndex = (this.currentKeynoteIndex - 1 + this.keynoteSlides.length) % this.keynoteSlides.length;
+    this.renderSlideshowSlide();
+    this.renderKeynoteSlide();
+    if (window.neoAudio) window.neoAudio.playPop();
+  }
+
+  renderSlideshowSlide() {
+    const overlay = document.getElementById("keynote-slideshow-overlay");
+    if (!overlay) return;
+    const slide = this.keynoteSlides[this.currentKeynoteIndex];
+    if (!slide) return;
+
+    overlay.innerHTML = `
+      <div class="slideshow-slide-card" onclick="window.neoApp.nextKeynoteSlide()">
+        <div class="slideshow-badge">${slide.badge}</div>
+        <h1 class="slideshow-title">${slide.title}</h1>
+        <p class="slideshow-sub">${slide.subtitle}</p>
+        <ul class="slideshow-points">
+          ${slide.points.map(p => `<li>${p}</li>`).join('')}
+        </ul>
+      </div>
+      <div class="slideshow-controls">
+        <button class="slideshow-btn" onclick="event.stopPropagation(); window.neoApp.prevKeynoteSlide()">◀ 이전</button>
+        <span class="slideshow-counter">${this.currentKeynoteIndex + 1} / ${this.keynoteSlides.length}</span>
+        <button class="slideshow-btn primary" onclick="event.stopPropagation(); window.neoApp.nextKeynoteSlide()">다음 ▶</button>
+        <button class="slideshow-btn exit" onclick="event.stopPropagation(); window.neoApp.exitKeynoteSlideshow()">✕ 발표 종료</button>
+      </div>
+    `;
   }
 
   renderKeynoteSlide() {
@@ -665,6 +725,70 @@ class MacBookNeoApp {
       tbody.appendChild(tr);
       if (window.neoAudio) window.neoAudio.playPop();
     }
+  }
+
+  toggleNumbersChart() {
+    const chartContainer = document.getElementById("numbers-chart-container");
+    const btn = document.getElementById("numbers-chart-btn");
+    if (!chartContainer) return;
+
+    const isVisible = chartContainer.style.display !== "none";
+    chartContainer.style.display = isVisible ? "none" : "block";
+
+    if (btn) {
+      btn.classList.toggle("primary", !isVisible);
+      btn.innerText = isVisible ? "📊 차트 생성" : "📊 차트 숨기기";
+    }
+
+    if (!isVisible) {
+      this.renderNumbersChart();
+      if (window.lilFinderGuy) {
+        window.lilFinderGuy.speak("Numbers 사전 예약 비율 차트를 생성했어! 📊✨\n4가지 컬러별 인기 비중을 실시간 SVG 그래프로 확인할 수 있어!");
+      }
+    } else {
+      if (window.lilFinderGuy) {
+        window.lilFinderGuy.speak("차트를 숨기고 다시 데이터 표 보기로 돌아왔어! 📑");
+      }
+    }
+    if (window.neoAudio) window.neoAudio.playPop();
+  }
+
+  renderNumbersChart() {
+    const container = document.getElementById("numbers-chart-container");
+    if (!container) return;
+
+    // Lightweight inline SVG bar chart
+    const data = [
+      { name: "Blush (핑크)", color: "#f43f5e", pct: 38, count: "3,800대" },
+      { name: "Indigo (블루)", color: "#2563eb", pct: 28, count: "2,800대" },
+      { name: "Silver (실버)", color: "#8b5cf6", pct: 21, count: "2,100대" },
+      { name: "Citrus (라임)", color: "#84cc16", pct: 13, count: "1,300대" }
+    ];
+
+    container.innerHTML = `
+      <div style="background:#fff; border-radius:10px; border:1px solid #e2e8f0; padding:16px; margin-top:14px; box-shadow:0 4px 12px rgba(0,0,0,0.04);">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+          <div>
+            <strong style="font-size:13px; color:#0f172a;">📊 MacBook Neo 컬러별 사전 예약 점유율</strong>
+            <div style="font-size:11px; color:#64748b;">출처: Numbers 데이터 기반 실시간 시각화</div>
+          </div>
+          <span style="font-size:11px; background:#eff6ff; color:#2563eb; padding:3px 8px; border-radius:12px; font-weight:700;">총 10,000대 집계</span>
+        </div>
+        <div style="display:flex; flex-direction:column; gap:9px;">
+          ${data.map(d => `
+            <div>
+              <div style="display:flex; justify-content:space-between; font-size:11px; margin-bottom:3px;">
+                <span style="font-weight:700; color:#334155;">${d.name}</span>
+                <span style="color:#64748b;">${d.count} (${d.pct}%)</span>
+              </div>
+              <div style="width:100%; height:12px; background:#f1f5f9; border-radius:6px; overflow:hidden;">
+                <div style="width:${d.pct}%; height:100%; background:${d.color}; border-radius:6px; transition:width 0.4s ease-out;"></div>
+              </div>
+            </div>
+          `).join('')}
+        </div>
+      </div>
+    `;
   }
 
   handleTrashClick() {
@@ -1032,7 +1156,7 @@ class MacBookNeoApp {
           <button class="iwork-tool-btn primary" onclick="window.neoApp.playKeynoteSlide()">▶ 재생</button>
           <button class="iwork-tool-btn" onclick="window.neoApp.addKeynoteSlide()">+ 슬라이드 추가</button>
           <div style="flex:1;"></div>
-          <button class="iwork-tool-btn" onclick="alert('iCloud에 프레젠테이션이 동기화되었습니다.')">☁️ 공유</button>
+          <button class="iwork-tool-btn" onclick="window.lilFinderGuy && window.lilFinderGuy.speak('Keynote 프레젠테이션이 iCloud Drive에 실시간 동기화되었어! ☁️✨')">☁️ 공유</button>
         </div>
         <div class="keynote-body">
           <div class="keynote-slide-strip" id="keynote-slide-strip"></div>
@@ -1064,7 +1188,7 @@ class MacBookNeoApp {
             <option>제목 2</option>
           </select>
           <div style="flex:1;"></div>
-          <button class="iwork-tool-btn primary" onclick="alert('도큐멘트가 안전하게 저장되었습니다.')">저장</button>
+          <button class="iwork-tool-btn primary" onclick="window.lilFinderGuy && window.lilFinderGuy.speak('Pages 기획서가 안전하게 저장되었어! 💾✨')">저장</button>
         </div>
         <div class="pages-canvas-area">
           <div class="pages-paper" contenteditable="true" spellcheck="false">
@@ -1100,7 +1224,7 @@ class MacBookNeoApp {
       <div class="iwork-app-view">
         <div class="iwork-toolbar">
           <button class="iwork-tool-btn primary" onclick="window.neoApp.addNumbersRow()">+ 행 추가</button>
-          <button class="iwork-tool-btn" onclick="alert('스프레드시트 차트가 생성되었습니다.')">📊 차트 생성</button>
+          <button class="iwork-tool-btn" id="numbers-chart-btn" onclick="window.neoApp.toggleNumbersChart()">📊 차트 생성</button>
           <div style="flex:1;"></div>
           <span style="font-size:12px; color:#475569; font-weight:600;">합계 수식: =SUM(E2:E5)</span>
         </div>
@@ -1156,6 +1280,7 @@ class MacBookNeoApp {
               </tr>
             </tbody>
           </table>
+          <div id="numbers-chart-container" style="display:none;"></div>
         </div>
       </div>
     `;

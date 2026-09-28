@@ -2185,3 +2185,109 @@ body.fullscreen-mode .ext-btn {
   font-size: 11px;
   padding: 6px 14px;
 }
+
+/* ===== Keynote Slideshow Presentation Mode ===== */
+.keynote-slideshow-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #090a0f;
+  color: #fff;
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 30px;
+  z-index: 500;
+  cursor: pointer;
+  user-select: none;
+}
+
+.slideshow-slide-card {
+  max-width: 500px;
+  width: 100%;
+  text-align: center;
+}
+
+.slideshow-badge {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  color: var(--theme-accent, #38bdf8);
+  margin-bottom: 12px;
+}
+
+.slideshow-title {
+  font-size: 30px;
+  font-weight: 800;
+  color: #fff;
+  margin-bottom: 8px;
+  letter-spacing: -0.5px;
+}
+
+.slideshow-sub {
+  font-size: 14px;
+  color: #94a3b8;
+  margin-bottom: 22px;
+}
+
+.slideshow-points {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.slideshow-points li {
+  font-size: 13px;
+  color: #e2e8f0;
+  background: rgba(255, 255, 255, 0.08);
+  padding: 9px 16px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.slideshow-controls {
+  position: absolute;
+  bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(30, 30, 45, 0.85);
+  padding: 6px 14px;
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  cursor: default;
+}
+
+.slideshow-btn {
+  background: rgba(255, 255, 255, 0.15);
+  color: #fff;
+  border: none;
+  padding: 5px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.slideshow-btn:hover {
+  background: rgba(255, 255, 255, 0.28);
+}
+.slideshow-btn.primary {
+  background: var(--theme-primary, #f43f5e);
+  font-weight: 700;
+}
+.slideshow-btn.exit {
+  background: rgba(239, 68, 68, 0.65);
+}
+.slideshow-counter {
+  font-size: 12px;
+  color: #cbd5e1;
+  font-weight: 600;
+  min-width: 44px;
+  text-align: center;
+}
+
