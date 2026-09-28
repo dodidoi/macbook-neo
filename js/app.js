@@ -405,6 +405,11 @@ class MacBookNeoApp {
       if (!e.target.closest(".desktop-file-icon")) {
         document.querySelectorAll(".desktop-file-icon").forEach(i => i.classList.remove("selected"));
       }
+      if (!e.target.closest(".neo-window") && !e.target.closest("#dock") && !e.target.closest("#neo-menubar")) {
+        if (window.windowManager) {
+          window.windowManager.updateMenubarAppName('Finder');
+        }
+      }
     });
 
     // Make Desktop Widgets interactive

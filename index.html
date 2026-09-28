@@ -31,7 +31,7 @@
         <nav id="neo-menubar">
           <div class="menubar-left">
             <div class="menu-item apple-logo" id="apple-menu-btn" title="이 Mac에 관하여"></div>
-            <div class="menu-item app-name">Finder</div>
+            <div class="menu-item app-name" id="menubar-app-name" onclick="window.windowManager.handleAppNameClick()" title="클릭하여 앱 열기 및 관리">Finder</div>
             <div class="menu-item" onclick="window.lilFinderGuy.speak('파일 메뉴야! 새 파인더 윈도우나 폴더를 생성할 수 있어.')">파일</div>
             <div class="menu-item" onclick="window.lilFinderGuy.speak('편집 메뉴야! 텍스트 복사, 붙여넣기, 실행 취소가 가능해.')">편집</div>
             <div class="menu-item" onclick="window.neoApp.toggleWidgets()">보기</div>

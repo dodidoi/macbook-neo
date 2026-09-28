@@ -102,6 +102,17 @@ class WindowManager {
       window.neoAudio.playPop();
     }
 
+    // Reset active window if the closed one was active
+    if (this.activeWindow === win) {
+      this.activeWindow = null;
+      const openWins = Object.values(this.windows).filter(w => w.isOpen && w.el && w.el.style.display !== 'none');
+      if (openWins.length > 0) {
+        this.bringToFront(openWins[openWins.length - 1]);
+      } else {
+        this.updateMenubarAppName('Finder');
+      }
+    }
+
     this.updateDockIndicators();
   }
 
@@ -116,6 +127,42 @@ class WindowManager {
     }
     win.el.classList.add("active");
     this.activeWindow = win;
+
+    this.updateMenubarAppName(win.id);
+  }
+
+  updateMenubarAppName(appIdOrName) {
+    const appNameEl = document.getElementById("menubar-app-name");
+    if (!appNameEl) return;
+    const nameMap = {
+      finder: 'Finder',
+      safari: 'Safari',
+      keynote: 'Keynote',
+      pages: 'Pages',
+      numbers: 'Numbers',
+      photos: '사진',
+      music: '음악',
+      notes: '메모',
+      calculator: '계산기',
+      settings: '시스템 설정',
+      about: '이 Mac에 관하여'
+    };
+    appNameEl.textContent = nameMap[appIdOrName] || appIdOrName || 'Finder';
+  }
+
+  handleAppNameClick() {
+    if (window.neoAudio) window.neoAudio.playPop();
+
+    if (this.activeWindow && this.activeWindow.isOpen) {
+      if (window.lilFinderGuy) {
+        window.lilFinderGuy.speak(`현재 활성화된 **${this.activeWindow.title}** 앱이야! 상단 메뉴바와 윈도우 컨트롤을 통해 자유롭게 조작해봐 💻✨`);
+      }
+    } else {
+      this.openWindow('finder');
+      if (window.lilFinderGuy) {
+        window.lilFinderGuy.speak("Finder(파일 탐색기)를 열었어! 📂\n도큐멘트, 다운로드, 프로젝트 파일들을 둘러봐!");
+      }
+    }
   }
 
   toggleMaximize(win) {
