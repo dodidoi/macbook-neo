@@ -82,8 +82,10 @@
             <!-- Calendar Widget -->
             <div class="neo-widget" id="widget-calendar" title="클릭해서 달력 일정 확인">
               <div class="widget-calendar-top">
-                <span>9월</span>
-                <span>월요일</span>
+                <div style="display:flex; align-items:center; gap:8px;">
+                  <span>9월</span>
+                  <span>월요일</span>
+                </div>
                 <button class="widget-dismiss-btn" title="캘린더 위젯 닫기" onclick="event.stopPropagation(); document.getElementById('widget-calendar').style.display='none';">×</button>
               </div>
               <div class="calendar-grid">

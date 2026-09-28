@@ -71,6 +71,8 @@ class MacBookNeoApp {
     this.isSpotlightOpen = false;
     this.isControlCenterOpen = false;
     this.initKeynote();
+    this.initPhotos();
+    this.initNotes();
   }
 
   init() {
@@ -565,6 +567,103 @@ class MacBookNeoApp {
     window.windowManager.openWindow("benchmark");
   }
 
+  initPhotos() {
+    this.photoCategories = {
+      landscapes: [
+        { src: 'assets/photo_sunset.jpg', title: '타호의 노을빛 산맥' },
+        { src: 'assets/photo_ocean.jpg', title: '에메랄드빛 태평양 파도' },
+        { src: 'assets/photo_aurora.jpg', title: '신비로운 밤하늘 오로라' },
+        { src: 'assets/photo_botanical.jpg', title: '미니멀 보태니컬 햇살' },
+        { src: 'assets/photo_neo_art.jpg', title: '네오 3D 젤리 스피어' }
+      ],
+      neo: [
+        { src: 'assets/neo_laptop_blush.png', title: 'Blush 핑크 실물 3D 렌더' },
+        { src: 'assets/neo_laptop_citrus.png', title: 'Citrus 라임 실물 3D 렌더' },
+        { src: 'assets/neo_laptop_indigo.png', title: 'Indigo 블루 실물 3D 렌더' },
+        { src: 'assets/neo_laptop_silver.png', title: 'Silver 실버 실물 3D 렌더' },
+        { src: 'assets/neo_lid_blush.png', title: '맥북 네오 4컬러 실물' }
+      ],
+      guy: [
+        { src: 'assets/finder_guy.png', title: '리틀 파인더 가이 공식 3D 화보' },
+        { src: 'assets/photo_neo_art.jpg', title: '파인더 가이의 아트 컬렉션' }
+      ]
+    };
+    this.currentPhotoCategory = 'landscapes';
+  }
+
+  filterPhotos(catKey) {
+    if (!this.photoCategories[catKey]) return;
+    this.currentPhotoCategory = catKey;
+
+    const cats = document.querySelectorAll(".photo-cat");
+    cats.forEach(c => {
+      c.classList.toggle("active", c.getAttribute("data-cat") === catKey);
+    });
+
+    const grid = document.querySelector(".photos-grid");
+    if (grid) {
+      const items = this.photoCategories[catKey];
+      grid.innerHTML = items.map(p => `
+        <div class="photo-item" onclick="window.neoApp.viewFullImage('${p.src}', '${p.title}')">
+          <img src="${p.src}" alt="${p.title}" />
+          <span>${p.title}</span>
+        </div>
+      `).join('');
+    }
+
+    if (catKey === 'neo' && window.lilFinderGuy) {
+      window.lilFinderGuy.speak("맥북 네오 4가지 컬러 실물 3D 렌더 갤러리야! 💻✨\n클릭하면 고해상도로 크게 볼 수 있어!");
+    } else if (catKey === 'guy' && window.lilFinderGuy) {
+      window.lilFinderGuy.speak("와! 내 사진첩을 열어줬구나! 고마워 ✨📸");
+    } else if (catKey === 'landscapes' && window.lilFinderGuy) {
+      window.lilFinderGuy.speak("감성 넘치는 고화질 자연 풍경 갤러리야! 🌄");
+    }
+
+    if (window.neoAudio) window.neoAudio.playPop();
+  }
+
+  initNotes() {
+    this.notesData = [
+      {
+        id: 0,
+        title: "맥북 네오 체험기",
+        preview: "첫인상: 색감이 너무 예쁘다...",
+        body: `맥북 네오 시뮬레이터를 사용해보는 중!\n- 내가 고른 컬러: Blush / Indigo / Silver / Citrus\n- A18 Pro 칩 기반의 초경량 가성비 Mac\n- 리틀 파인더 가이가 실시간으로 팁을 알려줘서 귀엽고 유용함!`
+      },
+      {
+        id: 1,
+        title: "리틀 파인더 가이의 팁",
+        preview: "알약 월페이퍼에 MAC 숨겨짐",
+        body: `✨ 리틀 파인더 가이가 알려주는 맥북 네오 시크릿 팁!\n\n1. 알약 캡슐 월페이퍼를 자세히 보면 'm-a-c' 글자가 숨겨져 있어요!\n2. 상단  애플 로고를 누르면 A18 Pro 칩 성능과 사양을 볼 수 있어요.\n3. 바탕화면 위젯(캘린더, 날씨, 사진)을 클릭해 실시간 정보를 확인해보세요.\n4. 제어 센터(상단 아이콘)에서 디스플레이 밝기와 로파이 BGM을 조절할 수 있습니다.\n5. 독(Dock)의 Keynote로 발표 슬라이드쇼를 재생하고, Numbers에서 실시간 차트를 만들어보세요!`
+      }
+    ];
+    this.activeNoteIndex = 0;
+  }
+
+  selectNote(index) {
+    if (index < 0 || index >= this.notesData.length) return;
+    this.activeNoteIndex = index;
+    const note = this.notesData[index];
+
+    const titleInput = document.querySelector(".notes-title-input");
+    const bodyInput = document.querySelector(".notes-body-input");
+    if (titleInput) titleInput.value = note.title;
+    if (bodyInput) bodyInput.value = note.body;
+
+    const items = document.querySelectorAll(".note-item");
+    items.forEach((item, idx) => {
+      item.classList.toggle("active", idx === index);
+    });
+
+    if (index === 1 && window.lilFinderGuy) {
+      window.lilFinderGuy.speak("내가 적어둔 시크릿 팁 메모를 열었구나! 📝✨\n알약 배경화면에 숨겨진 'm-a-c' 글자도 꼭 찾아봐!");
+    } else if (index === 0 && window.lilFinderGuy) {
+      window.lilFinderGuy.speak("맥북 네오 체험기 메모야! 자유롭게 타이핑해서 생각을 적어봐 ✍️");
+    }
+
+    if (window.neoAudio) window.neoAudio.playPop();
+  }
+
   initKeynote() {
     this.keynoteSlides = [
       {
@@ -1001,9 +1100,9 @@ class MacBookNeoApp {
     const photosHtml = `
       <div class="photos-app-view">
         <div class="photos-sidebar">
-          <div class="photo-cat active">🌄 감성 랜드스케이프</div>
-          <div class="photo-cat">💻 맥북 네오 라인업</div>
-          <div class="photo-cat">✨ 리틀 파인더 가이</div>
+          <div class="photo-cat active" data-cat="landscapes" onclick="window.neoApp.filterPhotos('landscapes')">🌄 감성 랜드스케이프</div>
+          <div class="photo-cat" data-cat="neo" onclick="window.neoApp.filterPhotos('neo')">💻 맥북 네오 라인업</div>
+          <div class="photo-cat" data-cat="guy" onclick="window.neoApp.filterPhotos('guy')">✨ 리틀 파인더 가이</div>
         </div>
         <div class="photos-grid">
           <div class="photo-item" onclick="window.neoApp.viewFullImage('assets/photo_sunset.jpg', '타호의 노을빛 산맥')">
@@ -1025,30 +1124,6 @@ class MacBookNeoApp {
           <div class="photo-item" onclick="window.neoApp.viewFullImage('assets/photo_neo_art.jpg', '네오 3D 젤리 스피어')">
             <img src="assets/photo_neo_art.jpg" alt="Neo Art" />
             <span>네오 3D 젤리 스피어</span>
-          </div>
-          <div class="photo-item" onclick="window.neoApp.viewFullImage('assets/finder_guy.png', '리틀 파인더 가이 공식 3D 렌더')">
-            <img src="assets/finder_guy.png" alt="Finder Guy" />
-            <span>리틀 파인더 가이 (Lil' Finder Guy)</span>
-          </div>
-          <div class="photo-item" onclick="window.neoApp.viewFullImage('assets/neo_laptop_blush.png', '맥북 네오 3D 렌더')">
-            <img src="assets/neo_laptop_blush.png" alt="Neo Render" />
-            <span>맥북 네오 3D 렌더</span>
-          </div>
-          <div class="photo-item" onclick="window.neoApp.viewFullImage('assets/neo_laptop_blush.png', 'Blush 실물 3D 렌더')">
-            <img src="assets/neo_laptop_blush.png" alt="Blush" />
-            <span>Blush 핑크 렌더</span>
-          </div>
-          <div class="photo-item" onclick="window.neoApp.viewFullImage('assets/neo_laptop_silver.png', 'Silver 실물 3D 렌더')">
-            <img src="assets/neo_laptop_silver.png" alt="Silver" />
-            <span>Silver 라벤더 렌더</span>
-          </div>
-          <div class="photo-item" onclick="window.neoApp.viewFullImage('assets/neo_laptop_indigo.png', 'Indigo 실물 3D 렌더')">
-            <img src="assets/neo_laptop_indigo.png" alt="Indigo" />
-            <span>Indigo 블루 렌더</span>
-          </div>
-          <div class="photo-item" onclick="window.neoApp.viewFullImage('assets/neo_laptop_citrus.png', 'Citrus 실물 3D 렌더')">
-            <img src="assets/neo_laptop_citrus.png" alt="Citrus" />
-            <span>Citrus 라임 렌더</span>
           </div>
         </div>
       </div>
@@ -1113,11 +1188,11 @@ class MacBookNeoApp {
     const notesHtml = `
       <div class="notes-app-view">
         <div class="notes-sidebar">
-          <div class="note-item active">
+          <div class="note-item active" onclick="window.neoApp.selectNote(0)">
             <strong>맥북 네오 체험기</strong>
             <span>첫인상: 색감이 너무 예쁘다...</span>
           </div>
-          <div class="note-item">
+          <div class="note-item" onclick="window.neoApp.selectNote(1)">
             <strong>리틀 파인더 가이의 팁</strong>
             <span>알약 월페이퍼에 MAC 숨겨짐</span>
           </div>

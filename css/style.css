@@ -1114,10 +1114,16 @@ body.dark-mode .neo-btn.primary {
   color: #475569;
   cursor: pointer;
   margin-bottom: 4px;
+  transition: background 0.15s, color 0.15s;
+}
+.photo-cat:hover {
+  background: rgba(0, 0, 0, 0.05);
+  color: #0f172a;
 }
 .photo-cat.active {
-  background: rgba(0, 0, 0, 0.08);
+  background: rgba(0, 0, 0, 0.09);
   color: #0f172a;
+  font-weight: 700;
 }
 .photos-grid {
   flex: 1;
@@ -1281,8 +1287,15 @@ body.dark-mode .neo-btn.primary {
   border-radius: 6px;
   cursor: pointer;
   margin-bottom: 4px;
+  transition: background 0.15s;
 }
-.note-item.active { background: rgba(0, 0, 0, 0.08); }
+.note-item:hover {
+  background: rgba(0, 0, 0, 0.05);
+}
+.note-item.active {
+  background: rgba(0, 0, 0, 0.09);
+  font-weight: 600;
+}
 .note-item strong { display: block; font-size: 12px; }
 .note-item span { font-size: 10px; color: #64748b; }
 .notes-editor {
