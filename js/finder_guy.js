@@ -62,11 +62,11 @@ class LilFinderGuy {
       setTimeout(() => this.avatar.classList.remove("speaking"), 600);
     }
 
-    // Typewriter effect
+    // Typewriter effect with throttled sound
     this.typingTimer = setInterval(() => {
       if (charIndex < text.length) {
         textEl.textContent += text.charAt(charIndex);
-        if (charIndex % 3 === 0 && window.neoAudio) {
+        if (charIndex % 5 === 0 && window.neoAudio) {
           window.neoAudio.playLilGuyTalk();
         }
         charIndex++;
@@ -89,7 +89,7 @@ class LilFinderGuy {
           });
         }
       }
-    }, 28);
+    }, 30);
 
     this.resetIdleTimer();
   }

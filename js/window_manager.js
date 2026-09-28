@@ -1,6 +1,7 @@
 /**
  * MacBook Neo Window Manager
  * Handles window creation, dragging, focus, minimize, maximize, and app lifecycle.
+ * Optimized for 60fps performance and zero DOM element leaks.
  */
 class WindowManager {
   constructor() {
@@ -18,8 +19,8 @@ class WindowManager {
     const defaultOptions = {
       width: 580,
       height: 420,
-      x: 290 + Object.keys(this.windows).length * 20,
-      y: 40 + Object.keys(this.windows).length * 18,
+      x: 290 + (Object.keys(this.windows).length % 6) * 20,
+      y: 40 + (Object.keys(this.windows).length % 6) * 18,
       minWidth: 320,
       minHeight: 240,
       className: '',
@@ -28,6 +29,23 @@ class WindowManager {
     };
 
     const config = Object.assign({}, defaultOptions, options);
+
+    // If window already exists, update content and title in-place without leaking DOM elements
+    if (this.windows[id]) {
+      const win = this.windows[id];
+      win.title = title;
+      win.contentHtml = contentHtml;
+      win.config = config;
+
+      if (win.el) {
+        const titleEl = win.el.querySelector(".window-title");
+        const bodyEl = win.el.querySelector(".window-body");
+        if (titleEl) titleEl.textContent = title;
+        if (bodyEl) bodyEl.innerHTML = contentHtml;
+      }
+      return;
+    }
+
     this.windows[id] = {
       id,
       title,
@@ -41,7 +59,7 @@ class WindowManager {
   }
 
   openWindow(id) {
-    let win = this.windows[id];
+    const win = this.windows[id];
     if (!win) return;
 
     if (!win.el) {
@@ -54,7 +72,7 @@ class WindowManager {
 
     // Call opening hook
     if (win.config.onOpen) {
-      win.config.onOpen(win);
+      try { win.config.onOpen(win); } catch(e) {}
     }
 
     // Trigger Finder Guy contextual speech
@@ -77,7 +95,7 @@ class WindowManager {
     win.isOpen = false;
 
     if (win.config.onClose) {
-      win.config.onClose(win);
+      try { win.config.onClose(win); } catch(e) {}
     }
 
     if (window.neoAudio) {
@@ -88,12 +106,15 @@ class WindowManager {
   }
 
   bringToFront(win) {
+    if (!win || !win.el) return;
     this.highestZ += 2;
-    if (win.el) {
-      win.el.style.zIndex = this.highestZ;
-      document.querySelectorAll(".neo-window").forEach(w => w.classList.remove("active"));
-      win.el.classList.add("active");
+    win.el.style.zIndex = this.highestZ;
+
+    // Fast O(1) active state switch
+    if (this.activeWindow && this.activeWindow.el && this.activeWindow !== win) {
+      this.activeWindow.el.classList.remove("active");
     }
+    win.el.classList.add("active");
     this.activeWindow = win;
   }
 
@@ -115,10 +136,10 @@ class WindowManager {
         width: win.el.style.width,
         height: win.el.style.height
       };
-      win.el.style.left = "12px";
-      win.el.style.top = "38px";
-      win.el.style.width = "calc(100% - 24px)";
-      win.el.style.height = "calc(100% - 110px)";
+      win.el.style.left = "8px";
+      win.el.style.top = "36px";
+      win.el.style.width = "calc(100% - 16px)";
+      win.el.style.height = "calc(100% - 105px)";
       win.el.classList.add("maximized");
       win.isMaximized = true;
     }
@@ -149,10 +170,19 @@ class WindowManager {
       </div>
     `;
 
-    // Hook buttons
-    el.querySelector(".win-btn.close").addEventListener("click", () => this.closeWindow(win.id));
-    el.querySelector(".win-btn.minimize").addEventListener("click", () => this.closeWindow(win.id));
-    el.querySelector(".win-btn.maximize").addEventListener("click", () => this.toggleMaximize(win));
+    // Hook window buttons
+    el.querySelector(".win-btn.close").addEventListener("click", (e) => {
+      e.stopPropagation();
+      this.closeWindow(win.id);
+    });
+    el.querySelector(".win-btn.minimize").addEventListener("click", (e) => {
+      e.stopPropagation();
+      this.closeWindow(win.id);
+    });
+    el.querySelector(".win-btn.maximize").addEventListener("click", (e) => {
+      e.stopPropagation();
+      this.toggleMaximize(win);
+    });
 
     // Focus on click
     el.addEventListener("mousedown", () => this.bringToFront(win));
@@ -169,6 +199,40 @@ class WindowManager {
     let isDragging = false;
     let startX = 0, startY = 0;
     let origX = 0, origY = 0;
+    let rafId = null;
+    let nextX = 0, nextY = 0;
+
+    const updatePosition = () => {
+      if (isDragging) {
+        el.style.left = `${nextX}px`;
+        el.style.top = `${nextY}px`;
+      }
+      rafId = null;
+    };
+
+    const onMouseMove = (moveEvt) => {
+      if (!isDragging) return;
+      const dx = moveEvt.clientX - startX;
+      const dy = moveEvt.clientY - startY;
+
+      nextX = origX + dx;
+      nextY = Math.max(30, origY + dy); // Keep below top menu bar
+
+      if (!rafId) {
+        rafId = requestAnimationFrame(updatePosition);
+      }
+    };
+
+    const onMouseUp = () => {
+      if (!isDragging) return;
+      isDragging = false;
+      if (rafId) {
+        cancelAnimationFrame(rafId);
+        rafId = null;
+      }
+      window.removeEventListener("mousemove", onMouseMove);
+      window.removeEventListener("mouseup", onMouseUp);
+    };
 
     handle.addEventListener("mousedown", (e) => {
       if (e.target.closest(".window-controls")) return;
@@ -182,27 +246,7 @@ class WindowManager {
 
       this.bringToFront(win);
 
-      const onMouseMove = (moveEvt) => {
-        if (!isDragging) return;
-        const dx = moveEvt.clientX - startX;
-        const dy = moveEvt.clientY - startY;
-
-        let newX = origX + dx;
-        let newY = origY + dy;
-
-        // Boundaries
-        newY = Math.max(30, newY); // don't go above top menu bar
-        el.style.left = `${newX}px`;
-        el.style.top = `${newY}px`;
-      };
-
-      const onMouseUp = () => {
-        isDragging = false;
-        window.removeEventListener("mousemove", onMouseMove);
-        window.removeEventListener("mouseup", onMouseUp);
-      };
-
-      window.addEventListener("mousemove", onMouseMove);
+      window.addEventListener("mousemove", onMouseMove, { passive: true });
       window.addEventListener("mouseup", onMouseUp);
     });
   }
