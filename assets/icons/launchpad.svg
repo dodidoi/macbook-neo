@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <defs>
+    <linearGradient id="lbg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#475569"/>
+      <stop offset="100%" stop-color="#0f172a"/>
+    </linearGradient>
+  </defs>
+  <rect x="5" y="5" width="90" height="90" rx="22" fill="url(#lbg)"/>
+  <!-- Rocket -->
+  <g transform="translate(50,50) rotate(-45)">
+    <path d="M 0 -24 C 9 -14 9 10 9 20 L -9 20 C -9 10 -9 -14 0 -24 Z" fill="#ffffff"/>
+    <polygon points="-9,12 -18,22 -9,22" fill="#ef4444"/>
+    <polygon points="9,12 18,22 9,22" fill="#ef4444"/>
+    <circle cx="0" cy="-4" r="4.5" fill="#38bdf8"/>
+    <!-- flame -->
+    <polygon points="-5,20 0,32 5,20" fill="#f59e0b"/>
+  </g>
+</svg>

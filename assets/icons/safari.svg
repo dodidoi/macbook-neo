@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <defs>
+    <linearGradient id="sbg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="100%" stop-color="#e6edfa"/>
+    </linearGradient>
+    <linearGradient id="socean" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38bdf8"/>
+      <stop offset="60%" stop-color="#2563eb"/>
+      <stop offset="100%" stop-color="#1d4ed8"/>
+    </linearGradient>
+    <linearGradient id="needleRed" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ef4444"/>
+      <stop offset="100%" stop-color="#b91c1c"/>
+    </linearGradient>
+  </defs>
+  <rect x="5" y="5" width="90" height="90" rx="22" fill="url(#sbg)"/>
+  <circle cx="50" cy="50" r="38" fill="url(#socean)"/>
+  <!-- Compass ticks -->
+  <circle cx="50" cy="50" r="34" stroke="rgba(255,255,255,0.45)" stroke-width="1.5" stroke-dasharray="1 4.5" fill="none"/>
+  <!-- Needle -->
+  <g transform="rotate(45 50 50)">
+    <polygon points="50,16 57,50 50,47" fill="url(#needleRed)"/>
+    <polygon points="50,16 43,50 50,47" fill="#f87171"/>
+    <polygon points="50,84 57,50 50,53" fill="#cbd5e1"/>
+    <polygon points="50,84 43,50 50,53" fill="#ffffff"/>
+  </g>
+  <circle cx="50" cy="50" r="4" fill="#ffffff"/>
+  <circle cx="50" cy="50" r="2" fill="#94a3b8"/>
+</svg>

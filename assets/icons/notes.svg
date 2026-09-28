@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <rect x="5" y="5" width="90" height="90" rx="22" fill="#ffffff"/>
+  <!-- Top leather strip -->
+  <path d="M 5 27 C 5 17 17 10 27 10 L 73 10 C 83 10 95 17 95 27 L 95 29 L 5 29 Z" fill="#f59e0b"/>
+  <!-- Note Lines -->
+  <line x1="16" y1="42" x2="84" y2="42" stroke="#e2e8f0" stroke-width="2"/>
+  <line x1="16" y1="55" x2="84" y2="55" stroke="#e2e8f0" stroke-width="2"/>
+  <line x1="16" y1="68" x2="84" y2="68" stroke="#e2e8f0" stroke-width="2"/>
+  <line x1="16" y1="81" x2="60" y2="81" stroke="#e2e8f0" stroke-width="2"/>
+  <!-- Yellow stitch -->
+  <line x1="8" y1="26" x2="92" y2="26" stroke="#d97706" stroke-width="1.5" stroke-dasharray="3 3"/>
+</svg>

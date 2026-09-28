@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <defs>
+    <linearGradient id="knBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#007aff"/>
+      <stop offset="100%" stop-color="#5856d6"/>
+    </linearGradient>
+    <linearGradient id="knBoard" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="100%" stop-color="#f1f5f9"/>
+    </linearGradient>
+    <linearGradient id="knBeam" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.8"/>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0.0"/>
+    </linearGradient>
+    <filter id="knShadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="4" stdDeviation="3" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+  <!-- Background Squircle -->
+  <rect x="5" y="5" width="90" height="90" rx="22" fill="url(#knBg)"/>
+
+  <!-- Presentation Easel / Board Stand -->
+  <g filter="url(#knShadow)">
+    <!-- Tripod Legs (Easel) -->
+    <line x1="50" y1="58" x2="50" y2="84" stroke="#d97706" stroke-width="3" stroke-linecap="round"/>
+    <line x1="50" y1="72" x2="28" y2="88" stroke="#d97706" stroke-width="3" stroke-linecap="round"/>
+    <line x1="50" y1="72" x2="72" y2="88" stroke="#d97706" stroke-width="3" stroke-linecap="round"/>
+
+    <!-- White Presentation Board -->
+    <rect x="20" y="22" width="60" height="42" rx="4" fill="url(#knBoard)"/>
+    <rect x="22" y="24" width="56" height="38" rx="2" fill="#ffffff"/>
+
+    <!-- Presentation Bar Chart & Trend Curve on Board -->
+    <polyline points="26,50 38,42 50,45 62,32 72,36" fill="none" stroke="#2563eb" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+    <circle cx="62" cy="32" r="2.5" fill="#2563eb"/>
+
+    <!-- Small colorful bars -->
+    <rect x="28" y="51" width="4" height="6" rx="1" fill="#93c5fd"/>
+    <rect x="38" y="44" width="4" height="13" rx="1" fill="#60a5fa"/>
+    <rect x="48" y="47" width="4" height="10" rx="1" fill="#93c5fd"/>
+    <rect x="58" y="34" width="4" height="23" rx="1" fill="#3b82f6"/>
+    <rect x="68" y="38" width="4" height="19" rx="1" fill="#60a5fa"/>
+  </g>
+
+  <!-- Director Spotlight in top-right corner pointing at board -->
+  <g transform="translate(74, 18)">
+    <circle cx="0" cy="0" r="7" fill="#fbbf24"/>
+    <circle cx="0" cy="0" r="5" fill="#fef08a"/>
+    <polygon points="-4,2 -30,30 -16,42 0,4" fill="url(#knBeam)" opacity="0.6"/>
+  </g>
+</svg>

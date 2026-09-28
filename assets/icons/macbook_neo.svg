@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <defs>
+    <linearGradient id="neobg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#c084fc"/>
+      <stop offset="100%" stop-color="#7c3aed"/>
+    </linearGradient>
+  </defs>
+  <rect x="5" y="5" width="90" height="90" rx="22" fill="url(#neobg)"/>
+  <!-- Laptop icon -->
+  <rect x="22" y="26" width="56" height="38" rx="4" fill="#1e293b" stroke="#ffffff" stroke-width="2"/>
+  <rect x="26" y="30" width="48" height="30" rx="2" fill="#f43f5e"/>
+  <!-- Apple on screen -->
+  <path d="M 14 67 L 86 67 C 88 67 90 69 88 72 L 82 74 C 80 75 20 75 18 74 L 12 72 C 10 69 12 67 14 67 Z" fill="#ffffff"/>
+</svg>

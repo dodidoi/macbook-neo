@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>beany의 맥북네오 체험 페이지</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" href="assets/finder_guy.png" type="image/png">
+</head>
+<body>
+
+  <!-- External Quick Controls (Floating outside the laptop screen, never obstructs view) -->
+  <div id="external-quick-controls">
+    <button class="ext-btn" id="ext-view-mode-btn" onclick="window.neoApp.toggleFrameMode()">💻 프레임 / ⛶ 전체 화면</button>
+    <button class="ext-btn" onclick="window.windowManager.openWindow('settings')">⚙️ 시스템 설정</button>
+    <button class="ext-btn" onclick="window.neoApp.toggleWidgets()">📅 위젯 숨김/표시</button>
+  </div>
+
+  <!-- Laptop Hardware Wrapper -->
+  <div id="laptop-device-wrapper">
+    <!-- Top Display Lid -->
+    <div class="laptop-lid">
+      <!-- Top Center Notch & Webcam -->
+      <div class="laptop-notch">
+        <div class="laptop-camera"></div>
+      </div>
+
+      <!-- MacBook Screen (Desktop Canvas) -->
+      <main id="macbook-screen">
+        <!-- Top Menu Bar -->
+        <nav id="neo-menubar">
+          <div class="menubar-left">
+            <div class="menu-item apple-logo" id="apple-menu-btn" title="이 Mac에 관하여"></div>
+            <div class="menu-item app-name">Finder</div>
+            <div class="menu-item" onclick="window.lilFinderGuy.speak('파일 메뉴야! 새 파인더 윈도우나 폴더를 생성할 수 있어.')">파일</div>
+            <div class="menu-item" onclick="window.lilFinderGuy.speak('편집 메뉴야! 텍스트 복사, 붙여넣기, 실행 취소가 가능해.')">편집</div>
+            <div class="menu-item" onclick="window.neoApp.toggleWidgets()">보기</div>
+            <div class="menu-item" onclick="window.lilFinderGuy.speak('이동 메뉴야! 최근 사용한 폴더나 iCloud Drive로 바로 이동해.')">이동</div>
+            <div class="menu-item" onclick="window.lilFinderGuy.speak('윈도우 정렬과 최소화 관리를 지원해.')">윈도우</div>
+            <div class="menu-item" onclick="window.lilFinderGuy.handleAvatarClick()">도움말</div>
+          </div>
+          <div class="menubar-right">
+            <div class="menu-icon" title="배터리 100%" onclick="window.lilFinderGuy.speak('배터리 100%! 올데이 배터리로 하루 종일 충전기 없이 자유롭게 사용할 수 있어! 🔋')">
+              <svg width="22" height="14" viewBox="0 0 22 14" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align:middle;">
+                <rect x="0.5" y="0.5" width="18" height="13" rx="3" stroke="currentColor" stroke-width="1.2"/>
+                <rect x="18.5" y="4" width="3" height="6" rx="1.5" fill="currentColor" opacity="0.5"/>
+                <rect x="2" y="2" width="14" height="10" rx="1.5" fill="#22c55e"/>
+              </svg>
+              <span style="font-size:11px;margin-left:2px;">100%</span>
+            </div>
+            <div class="menu-icon" title="Wi-Fi 연결됨" onclick="window.lilFinderGuy.speak('초고속 Wi-Fi 6E 네트워크에 완벽하게 연결되어 있어! 🌐')">
+              <svg width="18" height="14" viewBox="0 0 20 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg" style="vertical-align:middle;">
+                <path d="M10 13a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3z"/>
+                <path d="M10 9.5c1.6 0 3 .65 4.05 1.7l1.45-1.45A8 8 0 0 0 10 7.5a8 8 0 0 0-5.5 2.25l1.45 1.45A5.5 5.5 0 0 1 10 9.5z"/>
+                <path d="M10 5.5c2.7 0 5.15 1.1 6.93 2.88l1.42-1.42A11.5 11.5 0 0 0 10 3.5a11.5 11.5 0 0 0-8.35 3.46l1.42 1.42A9 9 0 0 1 10 5.5z"/>
+                <path d="M10 1.5c3.8 0 7.2 1.55 9.7 4.05l1.3-1.3A15 15 0 0 0 10 0 15 15 0 0 0-.5 4.55l1.3 1.3A13 13 0 0 1 10 1.5z" opacity="0.3"/>
+              </svg>
+            </div>
+            <div class="menu-icon" id="spotlight-btn" title="Spotlight 검색 (Cmd+Space)">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align:middle;">
+                <circle cx="6.5" cy="6.5" r="5" stroke="currentColor" stroke-width="1.5"/>
+                <line x1="10.5" y1="10.5" x2="15" y2="15" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <div class="menu-icon" id="control-center-btn" title="제어 센터">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg" style="vertical-align:middle;">
+                <rect x="1" y="1" width="6" height="6" rx="1.5"/>
+                <rect x="9" y="1" width="6" height="6" rx="1.5"/>
+                <rect x="1" y="9" width="6" height="6" rx="1.5"/>
+                <rect x="9" y="9" width="6" height="6" rx="1.5"/>
+              </svg>
+            </div>
+            <div class="menu-item" id="menubar-time" onclick="window.lilFinderGuy.speak('현재 시각이야! 맥북 네오의 고정밀 타임서버와 동기화되어 있어 ⏰')">9월 28일 (월) 오후 3:17</div>
+          </div>
+
+        </nav>
+
+        <!-- Desktop Area -->
+        <div id="desktop-area">
+          <!-- Desktop Live Widgets Column -->
+          <aside id="desktop-widgets-column">
+            <!-- Calendar Widget -->
+            <div class="neo-widget" id="widget-calendar" title="클릭해서 달력 일정 확인">
+              <div class="widget-calendar-top">
+                <span>9월</span>
+                <span>월요일</span>
+                <button class="widget-dismiss-btn" title="캘린더 위젯 닫기" onclick="event.stopPropagation(); document.getElementById('widget-calendar').style.display='none';">×</button>
+              </div>
+              <div class="calendar-grid">
+                <div class="cal-head">일</div><div class="cal-head">월</div><div class="cal-head">화</div><div class="cal-head">수</div><div class="cal-head">목</div><div class="cal-head">금</div><div class="cal-head">토</div>
+                <div></div><div></div><div class="cal-day">1</div><div class="cal-day">2</div><div class="cal-day">3</div><div class="cal-day">4</div><div class="cal-day">5</div>
+                <div class="cal-day">6</div><div class="cal-day">7</div><div class="cal-day">8</div><div class="cal-day">9</div><div class="cal-day">10</div><div class="cal-day">11</div><div class="cal-day">12</div>
+                <div class="cal-day">13</div><div class="cal-day">14</div><div class="cal-day">15</div><div class="cal-day">16</div><div class="cal-day">17</div><div class="cal-day">18</div><div class="cal-day">19</div>
+                <div class="cal-day">20</div><div class="cal-day">21</div><div class="cal-day">22</div><div class="cal-day">23</div><div class="cal-day">24</div><div class="cal-day">25</div><div class="cal-day">26</div>
+                <div class="cal-day">27</div><div class="cal-day active">28</div><div class="cal-day">29</div><div class="cal-day">30</div><div></div><div></div><div></div>
+              </div>
+            </div>
+
+            <!-- Weather Widget -->
+            <div class="neo-widget widget-weather-box" id="widget-weather" title="서울특별시 실시간 날씨">
+              <button class="widget-dismiss-btn" style="position:absolute; top:6px; right:8px;" title="날씨 위젯 닫기" onclick="event.stopPropagation(); document.getElementById('widget-weather').style.display='none';">×</button>
+              <div class="weather-city">서울특별시</div>
+              <div class="weather-temp">24°</div>
+              <div class="weather-desc">☀️ 대체로 맑음</div>
+              <div class="weather-range">최고:24° 최저:17°</div>
+            </div>
+
+            <!-- Photo Widget (Random Aesthetic Gallery) -->
+            <div class="neo-widget widget-photo-box" id="widget-photo" title="클릭하면 다음 랜덤 사진으로 변경됩니다!">
+              <button class="widget-dismiss-btn" style="position:absolute; top:6px; right:8px; z-index:10; background:rgba(0,0,0,0.4); color:#fff;" title="포토 위젯 닫기" onclick="event.stopPropagation(); document.getElementById('widget-photo').style.display='none';">×</button>
+              <img id="widget-photo-img" src="assets/photo_sunset.jpg" alt="감성 포토 위젯" />
+              <div class="photo-widget-badge">포토 위젯 📸</div>
+            </div>
+          </aside>
+
+          <!-- Desktop File Icons -->
+          <div id="desktop-files-grid">
+            <div class="desktop-file-icon" data-title="스크린샷 2026-09-28 1.06.28.png" data-type="screenshot">
+              <div class="file-thumb"><span class="icon-txt">🖼️</span></div>
+              <span class="file-name">스크린샷 2026-09-28</span>
+            </div>
+            <div class="desktop-file-icon" data-title="맥북 네오 4컬러 실물 3D 렌더.png" data-type="photo">
+              <div class="file-thumb"><img src="assets/neo_lid_blush.png" alt="사진" /></div>
+              <span class="file-name">네오 3D 렌더</span>
+            </div>
+            <div class="desktop-file-icon" data-title="리틀 파인더 가이 3D 화보.png" data-type="guide-photo">
+              <div class="file-thumb"><img src="assets/finder_guy.png" alt="가이" /></div>
+              <span class="file-name">리틀 파인더 가이</span>
+            </div>
+            <div class="desktop-file-icon" data-title="A18 Pro 벤치마크 보고서.txt" data-type="benchmark">
+              <div class="file-thumb"><span class="icon-txt">📊</span></div>
+              <span class="file-name">A18 Pro 벤치마크</span>
+            </div>
+            <div class="desktop-file-icon" data-title="맥북 네오 제품 기획서.pages" data-type="pages">
+              <div class="file-thumb"><img src="assets/icons/pages.svg" alt="Pages" style="width:36px; height:36px; object-fit:contain;" /></div>
+              <span class="file-name">네오 기획서.pages</span>
+            </div>
+          </div>
+
+          <!-- Windows Container -->
+          <div id="desktop-windows-container"></div>
+
+          <!-- Lil' Finder Guy Mascot & Guide -->
+          <div id="finder-guy-widget">
+            <div id="finder-guy-speech">
+              <div class="speech-header">
+                <span class="guide-badge">✨ Lil' Finder Guy 가이드</span>
+                <button class="speech-close-btn" onclick="document.getElementById('finder-guy-speech').classList.add('hidden')">×</button>
+              </div>
+              <div class="speech-text"></div>
+              <div class="speech-actions"></div>
+            </div>
+            <div id="finder-guy-avatar" title="리틀 파인더 가이를 클릭하면 팁을 알려줘요!">
+              <img src="assets/finder_guy.png" alt="리틀 파인더 가이" />
+            </div>
+          </div>
+        </div>
+
+        <!-- Floating Dock -->
+        <footer id="dock-container">
+          <div id="dock">
+            <div class="dock-item" data-app="finder">
+              <img class="dock-icon-img" src="assets/icons/finder.svg" alt="Finder" />
+              <div class="dock-tooltip">Finder</div>
+              <div class="dock-dot"></div>
+            </div>
+            <div class="dock-item" data-app="safari">
+              <img class="dock-icon-img" src="assets/icons/safari.svg" alt="Safari" />
+              <div class="dock-tooltip">Safari</div>
+              <div class="dock-dot"></div>
+            </div>
+            <div class="dock-item" data-app="keynote">
+              <img class="dock-icon-img" src="assets/icons/keynote.svg" alt="Keynote" />
+              <div class="dock-tooltip">Keynote</div>
+              <div class="dock-dot"></div>
+            </div>
+            <div class="dock-item" data-app="pages">
+              <img class="dock-icon-img" src="assets/icons/pages.svg" alt="Pages" />
+              <div class="dock-tooltip">Pages</div>
+              <div class="dock-dot"></div>
+            </div>
+            <div class="dock-item" data-app="numbers">
+              <img class="dock-icon-img" src="assets/icons/numbers.svg" alt="Numbers" />
+              <div class="dock-tooltip">Numbers</div>
+              <div class="dock-dot"></div>
+            </div>
+            <div class="dock-item" data-app="photos">
+              <img class="dock-icon-img" src="assets/icons/photos.svg" alt="사진" />
+              <div class="dock-tooltip">사진</div>
+              <div class="dock-dot"></div>
+            </div>
+            <div class="dock-item" data-app="music">
+              <img class="dock-icon-img" src="assets/icons/music.svg" alt="음악" />
+              <div class="dock-tooltip">음악</div>
+              <div class="dock-dot"></div>
+            </div>
+            <div class="dock-item" data-app="notes">
+              <img class="dock-icon-img" src="assets/icons/notes.svg" alt="메모" />
+              <div class="dock-tooltip">메모</div>
+              <div class="dock-dot"></div>
+            </div>
+            <div class="dock-item" data-app="calculator">
+              <img class="dock-icon-img" src="assets/icons/calculator.svg" alt="계산기" />
+              <div class="dock-tooltip">계산기</div>
+              <div class="dock-dot"></div>
+            </div>
+            <div class="dock-item" data-app="settings">
+              <img class="dock-icon-img" src="assets/icons/settings.svg" alt="시스템 설정" />
+              <div class="dock-tooltip">시스템 설정</div>
+              <div class="dock-dot"></div>
+            </div>
+            <div class="dock-divider"></div>
+            <div class="dock-item" data-app="about">
+              <img class="dock-icon-img" src="assets/icons/macbook_neo.svg" alt="맥북 네오 스펙" />
+              <div class="dock-tooltip">맥북 네오 스펙</div>
+              <div class="dock-dot"></div>
+            </div>
+            <div class="dock-item" data-app="trash">
+              <img class="dock-icon-img" src="assets/icons/trash.svg" alt="휴지통" style="background:transparent; box-shadow:none;" />
+              <div class="dock-tooltip">휴지통</div>
+            </div>
+          </div>
+        </footer>
+
+        <!-- Spotlight Modal -->
+        <div id="spotlight-modal" class="hidden">
+          <div class="spotlight-input-wrap">
+            <span class="spotlight-icon">🔍</span>
+            <input type="text" id="spotlight-input" placeholder="Spotlight 검색 (예: Safari, 설정, 음악, 스펙, 팁...)" />
+          </div>
+        </div>
+
+        <!-- Control Center Panel -->
+        <div id="control-center-panel" class="hidden">
+          <div class="cc-grid">
+            <div class="cc-card">
+              <div class="cc-icon-circle">􀙇</div>
+              <div class="cc-card-info">
+                <strong>Wi-Fi</strong>
+                <span>Neo_5GHz</span>
+              </div>
+            </div>
+            <div class="cc-card">
+              <div class="cc-icon-circle" style="background:#3b82f6;">􀊆</div>
+              <div class="cc-card-info">
+                <strong>Bluetooth</strong>
+                <span>AirPods Max</span>
+              </div>
+            </div>
+          </div>
+          <div class="cc-slider-card">
+            <div class="cc-slider-label">디스플레이 밝기 (Liquid Retina)</div>
+            <input type="range" class="cc-slider" min="20" max="100" value="95" oninput="document.getElementById('macbook-screen').style.filter = 'brightness(' + (this.value/100) + ')'" />
+          </div>
+          <div class="cc-slider-card">
+            <div class="cc-slider-label">음량 (사운드 시스템)</div>
+            <input type="range" class="cc-slider" min="0" max="100" value="80" />
+          </div>
+          <div class="cc-card" style="cursor:pointer;" onclick="window.neoApp.toggleMusic()">
+            <div class="cc-icon-circle" style="background:#e11d48;">🎵</div>
+            <div class="cc-card-info">
+              <strong>Lil' Finder Guy's Lofi Beat</strong>
+              <span>재생 / 일시정지 전환</span>
+            </div>
+          </div>
+        </div>
+
+      </main>
+    </div>
+
+    <!-- Laptop Base & Hinge -->
+    <div class="laptop-base">
+      <div class="laptop-indent"></div>
+    </div>
+  </div>
+
+  <!-- Onboarding & Color Selection Modal -->
+  <div id="neo-setup-modal">
+    <div class="setup-card">
+      <div class="setup-guide-avatar">
+        <img src="assets/finder_guy.png" alt="리틀 파인더 가이" />
+      </div>
+      <h1>MacBook Neo에 오신 것을 환영합니다!</h1>
+      <p class="subtitle">체험을 시작하기 전에 마음에 드는 맥북 네오의 시그니처 컬러를 골라보세요 ✨</p>
+
+      <div class="color-options-grid">
+        <!-- Blush -->
+        <div class="color-option-card selected" data-theme="blush">
+          <img src="assets/neo_lid_blush.png" class="card-laptop-img" alt="Blush" />
+          <div class="card-swatch" style="background: #f43f5e;"></div>
+          <div class="card-color-name">Blush</div>
+          <div class="card-color-desc">사랑스러운 베리 핑크</div>
+        </div>
+        <!-- Silver -->
+        <div class="color-option-card" data-theme="silver">
+          <img src="assets/neo_lid_silver.png" class="card-laptop-img" alt="Silver" />
+          <div class="card-swatch" style="background: #8b5cf6;"></div>
+          <div class="card-color-name">Silver</div>
+          <div class="card-color-desc">은은한 라벤더 실버</div>
+        </div>
+        <!-- Indigo -->
+        <div class="color-option-card" data-theme="indigo">
+          <img src="assets/neo_lid_indigo.png" class="card-laptop-img" alt="Indigo" />
+          <div class="card-swatch" style="background: #2563eb;"></div>
+          <div class="card-color-name">Indigo</div>
+          <div class="card-color-desc">깊고 세련된 인디고 블루</div>
+        </div>
+        <!-- Citrus -->
+        <div class="color-option-card" data-theme="citrus">
+          <img src="assets/neo_lid_citrus.png" class="card-laptop-img" alt="Citrus" />
+          <div class="card-swatch" style="background: #84cc16;"></div>
+          <div class="card-color-name">Citrus</div>
+          <div class="card-color-desc">상큼하고 경쾌한 라임</div>
+        </div>
+      </div>
+
+      <div class="setup-actions">
+        <button class="start-btn" id="start-simulator-btn">이 컬러로 맥북 네오 시작하기 🚀</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="js/audio.js"></script>
+  <script src="js/finder_guy.js"></script>
+  <script src="js/window_manager.js"></script>
+  <script src="js/finder_app.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
